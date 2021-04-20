@@ -1,25 +1,38 @@
-import logo from './logo.svg';
+import React, { useState } from 'react'
+import { connect } from 'react-redux'
+import { addVegetable } from './redux/actions/newProduct'
 import './App.css';
 
-function App() {
+function App({
+  vegetables, addVegetableAction
+}) {
+
+
+  const [inputValue, setInputValue] = useState('')
+
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div >
+      <input type='text' value={inputValue} onChange={(e) => setInputValue(e.target.value)}></input>
+      <input type='submit' onClick={() => addVegetableAction(inputValue)}></input>
+      <ul>
+        {Object.values(vegetables).map((vegetable) => vegetable.map((product, idx) => <li key={idx}>{product} </li>
+
+        )
+
+        )}
+      </ul>
     </div>
   );
 }
+const mapStateToProps = (state) => (
+  {
+    vegetables: state.vegetablesReducer
+  })
 
-export default App;
+
+const mapDispatchToProps = {
+  addVegetableAction: addVegetable
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(App)
